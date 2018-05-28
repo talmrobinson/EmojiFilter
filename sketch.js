@@ -2,7 +2,8 @@ var img;
 var octree;
 var emojiImages = ['0'];
 var imgURL;
-var eSize = 10;
+var eSize;
+var density = 64;
 
 function preload() {
   	img = loadImage('emerald/' +(floor(random(386))+1)+ '.png');
@@ -19,7 +20,9 @@ function loadEmojis(a){
 }
 
 function setup() {
-	createCanvas(640, 640).drop(gotFile);
+	createCanvas(min(window.innerWidth*.9,640),
+				 min(window.innerHeight -document.getElementById("instructions").offsetHeight,640) ).drop(gotFile);
+	eSize = (width > height?height:width)/density;
 	noStroke();
 	noSmooth();
 	
@@ -52,7 +55,7 @@ function draw() {
 	for ( var i = 0; i< iw; i+=eSize){
 		for ( var j = 0; j< ih; j+=eSize){
 			tempColor = get(x1+i,y1+j);
-			if ( tempColor[3] !=0 ){
+			if ( tempColor[3] !=0  ){
 				var temp = octree.findNearestPoint(new Vec3(tempColor[0],tempColor[1],tempColor[2]));
 				drawEmoji(x1+i,y1+j,'emojis/'+temp.data);
 				//image( emojiImages[parseInt(temp.data.slice(0, -4))], i*iw, j*ih, iw, ih);
