@@ -6,7 +6,7 @@ var eSize;
 var density = 64;
 
 function preload() {
-  	img = loadImage('emerald/' +(floor(random(386))+1)+ '.png');
+  	img = loadImage('emojis/' +(floor(random(2613))+1)+ '.png');
 	//img = loadImage('rocio.png');
 	//loadEmojis(1);
 
@@ -38,15 +38,10 @@ function draw() {
 	fill(255);
 	rect(0,0,width,height);
 	
-	if(img.width>img.height){
-		var iw = width;
-		var ih = (width/img.width)*img.height;
-	}else{
-		var iw =(height/img.height)*img.width;
-		var ih = height;	
-	}
-	
-	
+	var scale = min( width/img.width, height/img.height)
+	var iw = img.width*scale;
+	var ih = img.height*scale;
+
 	var x1 = width-iw -(width-iw)/2;
 	var y1 = height-ih -(height-ih)/2;
 	image(img,x1,y1,iw,ih);
@@ -62,6 +57,8 @@ function draw() {
 			}
 		}
 	}
+	//rect(0,0,x1,height);
+	//rect(x1+iw,0,x1,height);
 	noLoop();
 }
 
