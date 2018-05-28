@@ -2338,7 +2338,7 @@ var emojis = [
 [ 148 , 93 , 56 , '2337.png' ] ,
 [ 82 , 60 , 51 , '2338.png' ] ,
 [ 231 , 231 , 231 , '2339.png' ] ,
-[ NaN , NaN , NaN , '2340.png' ] ,
+[ 250 , 0 , 7 , '2340.png' ] , //flower chinese script emoji... troublesome cause so much transparent space
 [ 241 , 193 , 72 , '2341.png' ] ,
 [ 45 , 199 , 75 , '2342.png' ] ,
 [ 218 , 218 , 218 , '2343.png' ] ,

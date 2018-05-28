@@ -75,10 +75,20 @@ function drawEmoji(x,y,emoji){
 
 function gotFile(file) {
   // If it's an image file
+  console.log(file);
   if (file.type === 'image') {
     // Create an image DOM element but don't show it
     img = createImg(file.data, redraw).hide();
   } else {
-    println('Not an image file!');
+    console.log('Not an image file!');
   }
+}
+
+function fileUpload() {
+    img = createImg(URL.createObjectURL(document.getElementById("myFile").files[0]), redraw).hide();
+	
+	//free up URL
+	URL.revokeObjectURL(URL.createObjectURL(document.getElementById("myFile").files[0]));
+	//Thanks pimvdb
+	//https://stackoverflow.com/questions/6775767/how-can-i-draw-an-image-from-the-html5-file-api-on-canvas
 }
