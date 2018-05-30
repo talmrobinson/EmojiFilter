@@ -1,27 +1,34 @@
+p5.disableFriendlyErrors = true;
+
 var img;
 var octree;
 var emojiImages = ['0'];
 var imgURL;
 var eSize;
 var density = 64;
+var loaded = 0;
 
 function preload() {
   	img = loadImage('emojis/' +(floor(random(2613))+1)+ '.png');
 	//img = loadImage('rocio.png');
-	//loadEmojis(1);
+	loadEmojis(1);
 
 }
 
 function loadEmojis(a){
 	if (a<2614){
-		emojiImages.push(loadImage('emojis/'+ a + '.png'));
+		emojiImages.push(loadImage('emojis/'+ a + '.png', function(){
+			loaded++;
+			if (loaded%26==0)
+				document.getElementById("p5_loading").innerHTML = "Loading... " + Math.floor(loaded*100/2613)+"%";
+			}));
 		loadEmojis(a+1);
 	}
 }
 
 function setup() {
-	createCanvas(min(window.innerWidth*.9,640),
-				 min(window.innerHeight -document.getElementById("instructions").offsetHeight,640) ).drop(gotFile);
+	createCanvas(floor(min(window.innerWidth*.9,640)),
+				 floor(min(window.innerHeight -document.getElementById("instructions").offsetHeight,640)) ).drop(gotFile);
 	eSize = (width > height?height:width)/density;
 	noStroke();
 	noSmooth();
@@ -35,6 +42,7 @@ function setup() {
 }
 
 function draw() {
+	var d = pixelDensity();
 	fill(255);
 	rect(0,0,width,height);
 	
@@ -46,19 +54,15 @@ function draw() {
 	var y1 = height-ih -(height-ih)/2;
 	image(img,x1,y1,iw,ih);
 	
-	var tempColor;
-	for ( var i = 0; i< iw; i+=eSize){
-		for ( var j = 0; j< ih; j+=eSize){
-			tempColor = get(x1+i,y1+j);
-			if ( tempColor[3] !=0  ){
-				var temp = octree.findNearestPoint(new Vec3(tempColor[0],tempColor[1],tempColor[2]));
-				drawEmoji(x1+i,y1+j,'emojis/'+temp.data);
-				//image( emojiImages[parseInt(temp.data.slice(0, -4))], i*iw, j*ih, iw, ih);
-			}
+	loadPixels();
+	for ( var i = y1; i< ih+y1; i+=eSize){
+		for ( var j = x1; j< iw+x1; j+=eSize){
+			var idx = 4 * ((Math.floor(i)*d) * width*d + (Math.floor(j)*d));
+			var temp = octree.findNearestPoint(new Vec3(pixels[idx],pixels[idx+1],pixels[idx+2]));
+			//drawEmoji(j,i,'emojis/'+temp.data);
+			image( emojiImages[parseInt(temp.data.slice(0, -4))], j-eSize/2, i-eSize/2, eSize*2, eSize*2);
 		}
 	}
-	//rect(0,0,x1,height);
-	//rect(x1+iw,0,x1,height);
 	noLoop();
 }
 
