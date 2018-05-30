@@ -11,7 +11,7 @@ var loaded = 0;
 function preload() {
   	img = loadImage('emojis/' +(floor(random(2613))+1)+ '.png');
 	//img = loadImage('rocio.png');
-	loadEmojis(1);
+	//loadEmojis(1);
 
 }
 
@@ -59,8 +59,8 @@ function draw() {
 		for ( var j = x1; j< iw+x1; j+=eSize){
 			var idx = 4 * ((Math.floor(i)*d) * width*d + (Math.floor(j)*d));
 			var temp = octree.findNearestPoint(new Vec3(pixels[idx],pixels[idx+1],pixels[idx+2]));
-			//drawEmoji(j,i,'emojis/'+temp.data);
-			image( emojiImages[parseInt(temp.data.slice(0, -4))], j-eSize/2, i-eSize/2, eSize*2, eSize*2);
+			drawEmoji(j,i,'emojis/'+temp.data);
+			//image( emojiImages[parseInt(temp.data.slice(0, -4))], j-eSize/2, i-eSize/2, eSize*2, eSize*2);
 		}
 	}
 	noLoop();
@@ -69,11 +69,6 @@ function draw() {
 function drawEmoji(x,y,emoji){
 	loadImage(emoji, function(a){
 		image( a, x-eSize/2, y-eSize/2, eSize*2, eSize*2);
-		
-		//image( a, x, y, eSize/2, eSize/2);
-		//image( a, x+eSize/2, y, eSize/2, eSize/2);
-		//image( a, x+eSize/2, y+eSize/2, eSize/2, eSize/2);
-		//image( a, x, y+eSize/2, eSize/2, eSize/2);
 	});
 }
 
